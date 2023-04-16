@@ -9,10 +9,12 @@ int main(int argc, char *argv[]) {
     do {
         printf("Ingresar un caracter: ");
         scanf("%c", &caracter);
-        fgetc(stdin);
 
         if (caracter == 'n')  // si el caracter es n el do-while finaliza.
             break;
+
+        while (fgetc(stdin) != '\n')
+            ;
 
         printf("\n %c \n\n", caracter);
     } while (1);
