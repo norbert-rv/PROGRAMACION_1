@@ -3,7 +3,7 @@ por pantalla un mensaje que indique cuántos carácteres son dígitos, cuántos 
 del alfabeto en mayúscula, cuántos son letra del alfabeto en minúscula o de otro tipo de
 carácter. */
 
-// ME DA MAL EL RESULTADO, CORREGIR!
+// ME DA MAL EL RESULTADO, CORREGIR!  => no olvidar limpiar el buffer luego de ingresar N en los ejericios que luego piden un caracter
 
 #include <ctype.h>
 #include <stdio.h>
@@ -16,6 +16,9 @@ int main(int argc, char *argv[]) {
         printf("¿Cuántos caracteres ingresará?  ");
         scanf("%i", &N);
     } while (N <= 0);
+
+    while (fgetc(stdin) != '\n')
+        ;
 
     for (int i = 0; i < N; i++) {
         printf("Ingrese caracter %i: ", N_carac);
