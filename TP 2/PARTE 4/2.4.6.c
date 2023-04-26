@@ -11,24 +11,40 @@ int pedirN();
 int esPar(int);
 int contadorSeries(int);
 
-int main (int argc, char *argv[]){
+int main(int argc, char *argv[]) {
     printf("\nPrograma que muestra la cantidad de series de números impares ingresados...\n");
 
-    int N = pedirN(), numero;
+    int N = pedirN(), numero, cant_series;
 
-    for(int i = 0; i < N; i++){
-        printf("Ingresar un número:  ");
+    for (int i = 0; i < N; i++) {
+        printf("\nIngresar un número: ");
         scanf("%i", &numero);
+        cant_series = contadorSeries(numero);
     }
+
+    printf("\n> La cantidad de series de números impares es: %1i \n\n", cant_series);
+
+    return 0;
 }
 
-int contadorSeries(int num){
-    static int series = 0, auxiliar = 0;
+int contadorSeries(int num) {
+    static int seriesImpares = 0, contador = 0;
 
-    
+    if (!esPar(num)) {
+        contador++;
+        printf("\n\n>>> %i\n\n", contador);
+    } else {
+        contador = 0;
+    }
+
+    if (contador >= 2) {
+        seriesImpares++;
+    }
+
+    return seriesImpares;
 }
 
-int esPar(int num){
+int esPar(int num) {
     if (num % 2 == 0)
         return 1;
     else
