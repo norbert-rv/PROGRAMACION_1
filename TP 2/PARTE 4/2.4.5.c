@@ -11,7 +11,7 @@ por valor, que retorne un valor entero y que haga uso de variables static.
 #include <stdio.h>
 
 int pedirN();
-int mayorNumero(int);
+int mayorNumero();
 
 int main(int argc, char *argv[]) {
     printf("\nDeterminar el mayor de N números... \n");
@@ -21,10 +21,7 @@ int main(int argc, char *argv[]) {
     printf("\n  ------------ \n");
 
     for (int i = 0; i < N; i++) {
-        printf("\nIngresar un número: ");
-        scanf("%i", &numero);
-
-        mayor = mayorNumero(numero);
+        mayor = mayorNumero();
     }
 
     printf("\n> El mayor de los números ingresados es el %2i\n\n", mayor);
@@ -32,7 +29,11 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-int mayorNumero(int numero) {
+int mayorNumero() {
+        int numero;
+    printf("\nIngresar un número: ");
+    scanf("%i", &numero);
+
     static int mayor = -9999999;
     if (numero > mayor)
         mayor = numero;

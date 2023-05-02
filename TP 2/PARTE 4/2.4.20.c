@@ -32,7 +32,7 @@ typedef struct {
     char medio_pago;
 } venta;
 
-void ingresarVenta(venta *, int *, int *, int *);
+void ingresarVenta(venta *);
 float totalVenta(venta *una_venta, float totalT, float *totalE, float *totalC);
 void ventaMayor(venta ventaIngresada, venta *ventaMayor);
 void porcentajes(float total, float individual, float *porcentaje);
@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
     char inicio;
     float totalT = 0, totalE = 0, totalC = 0, TOTAL;
     float porcentajeT, porcentajeE, porcentajeC;
-    int contT = 0, contE = 0, contC = 0;
     int finalizar = 0;
 
     do {
@@ -59,7 +58,7 @@ int main(int argc, char *argv[]) {
         if (finalizar)
             break;
 
-        ingresarVenta(&ventaIngresada, &contT, &contE, &contE);
+        ingresarVenta(&ventaIngresada);
         totalT = totalVenta(&ventaIngresada, totalT, &totalE, &totalC);
         ventaMayor(ventaIngresada, &ventasMayor);
     } while (1);
@@ -87,7 +86,7 @@ int main(int argc, char *argv[]) {
 }
 
 // función para ingresar venta con parámetro por referencia y devuelve un booleano dependiendo de si se ingresa 'F' o no.
-void ingresarVenta(venta *ventaIngreso, int *contT, int *contE, int *contC) {
+void ingresarVenta(venta *ventaIngreso) {
     do {
         printf("Ingresar DNI: ");
         scanf("%i", &ventaIngreso->dni);
@@ -104,13 +103,6 @@ void ingresarVenta(venta *ventaIngreso, int *contT, int *contE, int *contC) {
         ventaIngreso->medio_pago = getchar();
         getchar();
     } while (ventaIngreso->medio_pago != 't' && ventaIngreso->medio_pago != 'c' && ventaIngreso->medio_pago != 'e');
-
-    if (ventaIngreso->medio_pago == 't')
-        *contT++;
-    else if (ventaIngreso->medio_pago == 'e')
-        *contE++;
-    else
-        *contC++;
 }
 
 float totalVenta(venta *una_venta, float totalT, float *totalE, float *totalC) {
