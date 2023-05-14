@@ -1,7 +1,7 @@
 /* Realizar un programa que permita cargar un arreglo V de orden N de números enteros y luego
 presente por pantalla el arreglo ingresado y genere otro arreglo P que contenga todos los números
-pares de V, y lo presente por pantalla. En caso de que V no tenga números pares mostrar el
-correspondiente mensaje por pantalla. */
+pares de V, y lo presente por pantalla ordenado de forma ascendente. En caso de que V no tenga
+números pares mostrar el correspondiente mensaje por pantalla. */
 
 #include <stdio.h>
 
@@ -12,6 +12,7 @@ int esPar(int);
 int generadorPares(int orden, int arreglo[], int pares[]);
 void mostrarArreglo(int orden, int arreglo[]);
 void mostrarPares(int orden, int arreglo[]);
+void ordenarAscendente(int orden, int arreglo[]);
 
 int main(int argc, char *argv[]) {
     int orden = pedirOrdenArreglo(), cant_pares;
@@ -21,6 +22,8 @@ int main(int argc, char *argv[]) {
     mostrarArreglo(orden, enteros);
 
     cant_pares = generadorPares(orden, enteros, pares);
+
+    ordenarAscendente(cant_pares, pares);
 
     if (pares == 0)
         printf("\n> El arreglo ingresado no contiene números pares.\n");
@@ -52,7 +55,9 @@ void ingresarArregloEnteros(int orden, int arreglo[]) {
 }
 
 int esPar(int numero) {
-    if (numero % 2 == 0)
+    if (numero == 0)
+        return 0;
+    else if (numero % 2 == 0)
         return 1;
     else
         return 0;
@@ -84,12 +89,26 @@ void mostrarArreglo(int orden, int arreglo[]) {
 }
 
 void mostrarPares(int orden, int arreglo[]) {
-    printf("\n> El arreglo ingresado tiene %i números pares y el arreglo resultante es: (", orden);
+    printf("> El arreglo ingresado tiene %i elementos pares y el arreglo resultante es: (", orden);
 
     for (int i = 0; i < orden; i++) {
         if (i < orden - 1)
             printf("%i, ", arreglo[i]);
         else
             printf("%i)\n\n", arreglo[i]);
+    }
+}
+
+void ordenarAscendente(int orden, int arreglo[]) {
+    int aux, j;
+
+    for (int i = 0; i < orden; i++) {
+        for (j = 0; j < orden - 1; j++) {
+            if (arreglo[i] < arreglo[j]) {
+                aux = arreglo[i];
+                arreglo[i] = arreglo[j];
+                arreglo[j] = aux;
+            }
+        }
     }
 }
