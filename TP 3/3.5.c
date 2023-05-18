@@ -7,6 +7,7 @@ elementos ingresados que sean menores al promedio */
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
+    int numeros[100];
     int N, suma_elementos = 0, cant_mayores = 0, cant_menores = 0;
     float promedio;
 
@@ -14,13 +15,11 @@ int main(int argc, char *argv[]) {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
-    int numeros[N];
-
-    // ingreso elementos al arreglo y al mismo tiempo voy sumando los valores ingresados para sacar el promedio
+        // ingreso elementos al arreglo y al mismo tiempo voy sumando los valores ingresados para sacar el promedio
     for (int i = 0; i < N; i++) {
         printf("\nIngresar número: ");
         scanf("%i", &numeros[i]);

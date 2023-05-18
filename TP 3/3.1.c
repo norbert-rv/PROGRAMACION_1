@@ -9,20 +9,26 @@ int main(int argc, char *argv[]) {
     int numeros[100];
 
     do {
-        printf("\nIngresar el número de elementos que se ingresarán en el arreglo: ");
+        printf("\nIngresar el tamaño del arreglo: ");
         scanf("%i", &N);
-    } while (N <= 0);
+
+        if (N > 100)
+            printf("\n> El tamaño no puede ser mayor que 100! \n");
+    } while (N <= 0 || N > 100);
 
     for (int i = 0; i < N; i++) {
         printf("\nIngresar número: ");
         scanf("%i", &numeros[i]);
     }
 
-    for (int i = 0; i < N; i++) {
-        printf("\n>> Número en posición %i: %i \n", i + 1, numeros[i]);
-    }
+    printf("\n>> El arreglo ingresado es: (");
 
-    printf("\n\n");
+    for (int i = 0; i < N; i++) {
+        if (i < N - 1)
+            printf("%i, ", numeros[i]);
+        else
+            printf("%i)\n\n", numeros[i]);
+    }
 
     return 0;
 }

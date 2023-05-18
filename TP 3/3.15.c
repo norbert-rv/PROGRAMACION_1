@@ -12,8 +12,8 @@ void mostrarArreglo(int orden, int arreglo[]);
 void ordenarDescendente(int orden, int arreglo[]);
 
 int main(int argc, char *argv[]) {
+    int arregloEnteros[100];
     int orden = pedirOrdenArreglo();
-    int arregloEnteros[orden];
 
     ingresarArregloEnteros(orden, arregloEnteros);
     ordenarDescendente(orden, arregloEnteros);
@@ -29,9 +29,9 @@ int pedirOrdenArreglo() {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0 || N > 200);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     return N;
 }

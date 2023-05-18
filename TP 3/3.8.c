@@ -15,8 +15,8 @@ int contadorApariciones(int numeroX, int ordenArreglo, int arreglo[]);
 void mostrarArregloEntero(int orden, int arreglo[]);
 
 int main(int argc, char *argv[]) {
+    int Enteros[100];
     int ordenArreglo = pedirOrdenArreglo(), aparicionesDeX, numeroX;
-    int Enteros[ordenArreglo];
 
     ingresarArregloEnteros(ordenArreglo, Enteros);
 
@@ -41,9 +41,9 @@ int pedirOrdenArreglo() {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     return N;
 }

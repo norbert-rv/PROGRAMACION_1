@@ -5,6 +5,7 @@ alfabéticos, cuántos son dígitos y cuántos de otras categorías. */
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
+    char caracteres[50];
     int N;
     int cantidad_alfa = 0, cantidad_digit = 0, cantidad_otro = 0;
 
@@ -12,13 +13,11 @@ int main(int argc, char *argv[]) {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0);
+        if (N <= 0 || N > 50)
+            printf("\n>> El orden debe estar entre 1 y 50! \n");
+    } while (N <= 0 || N > 50);
 
     fgetc(stdin);
-
-    char caracteres[N];
 
     for (int i = 0; i < N; i++) {
         printf("\nIngresar caracter: ");

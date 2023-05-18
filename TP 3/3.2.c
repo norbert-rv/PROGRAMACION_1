@@ -8,11 +8,15 @@ int main(int argc, char *argv[]) {
     char caracteres[100];
 
     do {
-        printf("\nIngresar cantidad de caracteres: ");
+        printf("\nIngresar orden del arreglo de caracteres: ");
         scanf("%i", &N);
-    } while (N <= 0);
 
-    fgetc(stdin);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
+
+    while (getchar() != '\n')
+        ;
 
     for (int i = 0; i < N; i++) {
         printf("\nIngresar caracter: ");
@@ -20,11 +24,14 @@ int main(int argc, char *argv[]) {
         fgetc(stdin);
     }
 
-    for (int i = 0; i < N; i++) {
-        printf("\n\n>> Caracter en posición %i: %c ", i + 1, caracteres[i]);
-    }
+    printf("\n> El arreglo ingresado es: (");
 
-    printf("\n\n");
+    for (int i = 0; i < N; i++) {
+        if (i < N - 1)
+            printf("%c, ", caracteres[i]);
+        else
+            printf("%c)\n\n", caracteres[i]);
+    }
 
     return 0;
 }

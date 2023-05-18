@@ -9,6 +9,8 @@ arreglo (opción a), por lo que deberá controlar esta situación. Además, cont
 ingresado por el usuario, sea un entero positivo y se encuentre en el rango permitido.
 */
 
+// Falta completar
+
 #include <ctype.h>
 #include <stdio.h>
 

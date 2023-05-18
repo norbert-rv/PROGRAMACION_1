@@ -9,8 +9,8 @@ void invertirArreglo(int orden, int arreglo[], int invertido[]);
 void mostrarArreglos(int orden, int arreglo[], int invertido[]);
 
 int main(int argc, char *argv[]) {
+    int arregloEnteros[100], invertido[100];
     int orden = pedirOrdenArreglo();
-    int arregloEnteros[orden], invertido[orden];
 
     ingresarArregloEnteros(orden, arregloEnteros);
     invertirArreglo(orden, arregloEnteros, invertido);
@@ -27,9 +27,9 @@ int pedirOrdenArreglo() {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0 || N > 200);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     return N;
 }

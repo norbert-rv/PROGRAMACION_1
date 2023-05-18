@@ -1,7 +1,7 @@
 /* Cargar un arreglo con N números enteros, luego buscar el menor elemento impar contenido en el
 mismo. En caso de no encontrar elementos impares presentar un mensaje por pantalla */
 
-// Pasa algo raro con el 1 y el 3...
+// Pasa algo raro con el 1 y el 3... no pasa siempre, que me toma el 3 como el menor impar en vez del 1.
 
 #include <stdio.h>
 
@@ -11,8 +11,8 @@ void ingresarArregloEnteros(int orden, int arreglo[]);
 int buscarMenorImpar(int orden, int arregloEntero[]);
 
 int main(int argc, char *argv[]) {
+    int arregloEnteros[100];
     int orden = pedirOrdenArreglo(), menorImpar;
-    int arregloEnteros[orden];
 
     ingresarArregloEnteros(orden, arregloEnteros);
     menorImpar = buscarMenorImpar(orden, arregloEnteros);
@@ -44,9 +44,9 @@ int pedirOrdenArreglo() {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0 || N > 200);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     return N;
 }

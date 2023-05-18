@@ -7,17 +7,16 @@ cantidad de elementos del arreglo que son mayores al número ingresado. */
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
+    int numerosEnteros[100];
     int N, numero_referencia, contadorMayores = 0;
 
     do {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0);
-
-    int numerosEnteros[N];
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     printf("\nIngresar el número a comparar con los elementos del arreglo: ");
     scanf("%i", &numero_referencia);

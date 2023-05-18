@@ -13,8 +13,8 @@ void moverElementosArreglo(int X_lugares, int ordenArr, int arregloOriginal[], i
 void mostrarArreglos(int orden, int ArrOriginal[], int nuevoArr[], int X_lugares);
 
 int main(int argc, char *argv[]) {
+    int arregloEnteros[100], arregloDesplazado[100];
     int ordenN = pedirOrdenArreglo(), X;  // X es el numero de lugares que se desplazaran los elementos
-    int arregloEnteros[ordenN], arregloDesplazado[ordenN];
 
     ingresarArregloEnteros(ordenN, arregloEnteros);
 
@@ -40,9 +40,9 @@ int pedirOrdenArreglo() {
         printf("\nIngresar el orden del arreglo: ");
         scanf("%i", &N);
 
-        if (N <= 0)
-            printf("\n>> El orden debe ser mayor que 0!\n");
-    } while (N <= 0 || N > 200);
+        if (N <= 0 || N > 100)
+            printf("\n> El orden debe estar entre 1 y 100! \n");
+    } while (N <= 0 || N > 100);
 
     return N;
 }
