@@ -1,9 +1,7 @@
-/* Ingresar los datos de UN huésped. Luego presentar por pantalla los datos del mismo
-(apellido/s, nombre/s, ciudad de origen, cantidad de días que se va a hospedar, importe
-que debe abonar por los días que se quede). Para presentar por pantalla usar este formato:
-Huesped: Younes, José Ciudad de origen: Cordoba
-Dias Hospedaje: 5 dias Importe a abonar:7500.00
-*/
+/* Agregar los siguientes controles al problema anterior
+a. Controlar que los valores numéricos cargados sean válidos.
+b. Los campos apellido/s, nombre/s solo deben ser alfabéticos, y pueden contener
+caracteres especiales como apóstrofe y espacio. */
 
 #include <stdio.h>
 #include <string.h>
@@ -32,11 +30,17 @@ int main(int argc, char *argv[]) {
 
 void pedirDatosHuesped(huesped *unHuesped) {
     printf("\nApellido: ");
-    fgets(unHuesped->apellido, 40, stdin);
-    unHuesped->apellido[strlen(unHuesped->apellido) - 1] = '\0';
+    // fgets(unHuesped->apellido, 40, stdin);
+    // unHuesped->apellido[strlen(unHuesped->apellido) - 1] = '\0';
+    scanf("%[a-z A-Z']s", &unHuesped->apellido);
+    while (getchar() != '\n')
+        ;
     printf("\nNombre: ");
-    fgets(unHuesped->nombre, 40, stdin);
-    unHuesped->nombre[strlen(unHuesped->nombre) - 1] = '\0';
+    // fgets(unHuesped->nombre, 40, stdin);
+    // unHuesped->nombre[strlen(unHuesped->nombre) - 1] = '\0';
+    scanf("%[a-z A-Z'áéíóúÁÉÍÓÚ]s", &unHuesped->nombre);
+    while (getchar() != '\n')
+        ;
     printf("\nCiudad: ");
     fgets(unHuesped->ciudad, 20, stdin);
     unHuesped->ciudad[strlen(unHuesped->ciudad) - 1] = '\0';
@@ -44,12 +48,12 @@ void pedirDatosHuesped(huesped *unHuesped) {
     printf("\nPrecio: ");
     do {
         scanf("%f", &unHuesped->precio);
-    } while (unHuesped->precio <= 0);
+    } while (unHuesped->precio <= 0 || unHuesped->precio > 9999999);
 
     printf("\nDias: ");
     do {
         scanf("%i", &unHuesped->dias);
-    } while (unHuesped->dias <= 0);
+    } while (unHuesped->dias <= 0 || unHuesped->dias > 100);
 }
 
 void mostrarDatosHuesped(huesped unHuesped) {
