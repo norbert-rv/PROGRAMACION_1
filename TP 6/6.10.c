@@ -1,5 +1,12 @@
-/* Modificar el programa anterior y agregar al menú la opción “5- Modificación de datos de un producto
-(buscando por nombre comercial)”. En esta opción solo se permite modificar el precio del producto. */
+/* Modificar el programa anterior y agregar al menú las opciones:
+6- Mostrar los datos de los productos vencidos
+7- Generar y presentar por pantalla otro archivo llamado vencidos.dat que contendrá los
+productos vencidos.
+La opción 6, debe solicitar el ingreso del mes y año actual para comparar con la fecha de vencimiento,
+luego el programa debe mostrar los datos de los productos vencidos.
+La opción 7, debe solicitar el ingreso del mes y año actual, para comparar con la fecha de vencimiento de
+cada producto, en caso de encontrar productos vencidos, el programa deberá: generar y presentar por
+pantalla otro archivo llamado vencidos.dat que contendrá los productos vencidos. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,9 +35,13 @@ void mostrarTodosProductos(char nombre[]);
 void ordenarAscendente(char nombre[]);
 void consultaPorNombre(char nombre[]);
 void cambiarPrecio(char nombre[]);
+int noEstaVencido(producto prod, int, int); /* la funcion me dice si el producto está vencido o no */
+void mostrarProductosVencidos(char nombre[]);
+void archivosVencidos(char nombre[], char nombreVencidos[]);
 
 int main(int argc, char *argv[]) {
     char nombreArchivo[] = "productosAlmacen.dat";
+    char archivoVencidos[] = "vencidos.dat";
     int huboIngreso = 0; /* bandera para saber si se ingresó al menos un producto o no */
 
     aperturaArchivo(nombreArchivo);
@@ -68,6 +79,18 @@ int main(int argc, char *argv[]) {
                     cambiarPrecio(nombreArchivo);
                 } else
                     printf("\n>> Aún no se ingresó ningún producto. Nada que cambiar... \n");
+                break;
+            case 6:
+                if (huboIngreso) {
+                    mostrarProductosVencidos(archivoVencidos);
+                } else
+                    printf("\n>> Aún no se ingresó ningún producto. Nada que hacer... \n");
+                break;
+            case 7:
+                if (huboIngreso) {
+                    archivosVencidos(nombreArchivo, archivoVencidos);
+                } else
+                    printf("\n>> Aún no se ingresó ningún producto. Nada que hacer... \n");
                 break;
             case 99:
                 printf("\n>> Saliendo del programa... \n\n");
@@ -194,6 +217,8 @@ int menu() {
     printf("\n3. Ordenar el archivo en forma alfabética por nombre comercial: ordena de manera ascendente los productos en el archivo");
     printf("\n4. Consulta de productos por nombre comercial: muestra todos los productos en caso de haber coincidencias o un mensaje");
     printf("\n5. Modificación de datos de un producto (buscando por nombre comercial)");
+    printf("\n6. Mostrar los datos de los productos vencidos");
+    printf("\n7. Generar y presentar por pantalla otro archivo llamado vencidos.dat que contendrá los productos vencidos");
     printf("\n99. Salir del programa");
     printf("\n\nOpción: ");
     scanf("%i", &opcion);
@@ -323,4 +348,77 @@ void cambiarPrecio(char nombre[]) {
 
     if (!coincidencia)
         printf("\n>> No se encontraron productos de nombre comercial '%s'... \n", nombreComercial);
+}
+
+/* 1 si no está vencido, 0 si está vencido */
+int noEstaVencido(producto prod, int mesActual, int anioActual) {
+    /* si es anterior al año actual, el producto está vencido */
+    if (prod.fecha.anio < anioActual)
+        return 0;
+    /* si es posterior al año actual, no está vencido */
+    if (prod.fecha.anio > anioActual)
+        return 1;
+    /* si el año es el actual y el mes anterior al actual, está vencido. Caso contrario, no está vencido */
+    if (prod.fecha.anio == anioActual && prod.fecha.mes < mesActual)
+        return 0;
+    else
+        return 1;
+}
+
+void mostrarProductosVencidos(char nombre[]) {
+    long i, t;
+    int coincidencia = 0;
+    producto prod;
+    FILE *p;
+
+    p = fopen(nombre, "rb");
+    fseek(p, 0, 2);
+    t = ftell(p) / sizeof(prod);
+    rewind(p);
+
+    for (i = 0; i < t; i++) {
+        fread(&prod, sizeof(prod), 1, p);
+        if (!noEstaVencido(prod, 6, 2023)) {
+            if (!coincidencia) {
+                printf("\n>> Productos Vencidos... \n");
+                coincidencia = 1;
+            }
+            mostrarProducto(prod, i + 1);
+        }
+    }
+
+    fclose(p);
+
+    if (!coincidencia)
+        printf("\n>> No hay productos vencidos... \n");
+}
+
+void archivosVencidos(char nombre[], char nombreVencidos[]) {
+    long i, t; /* t es la cantidad de estructuras en el archivo original */
+    producto prod;
+    FILE *productos;
+    FILE *vencidos;
+
+    aperturaArchivo(nombreVencidos);
+
+    productos = fopen(nombre, "rb");
+    vencidos = fopen(nombreVencidos, "wb");
+
+    fseek(productos, 0, 2);
+    t = ftell(productos) / sizeof(prod);
+    rewind(productos);
+
+    for (i = 0; i < t; i++) {
+        fread(&prod, sizeof(prod), 1, productos);
+        if (!noEstaVencido(prod, 6, 2023)) {
+            fwrite(&prod, sizeof(prod), 1, vencidos);
+        }
+    }
+
+    fclose(productos);
+    fclose(vencidos);
+
+    /* muestro todos los productos en el archivo de vencidos */
+    printf("\n>> Archivo de productos vencidos... \n");
+    mostrarTodosProductos(nombreVencidos);
 }
