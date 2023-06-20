@@ -1,26 +1,19 @@
-/* Implementar un programa que permita registrar su agenda en un archivo binario. Para esto debe:
-○ Utilizar una variable tipo estructura que contendrá información referente a personas: Fecha de
-nacimiento (día, mes y año), Apellido, Nombre, Código. Usar una estructura anidada para
-guardar la fecha.
-○ El código será un valor numérico que inicia en uno y se incrementa de uno en uno.
-○ Realizar controles de datos
-i. apellido y nombre pueden contener solamente letras, espacio y apóstrofe (D’Urso)
-ii. fecha: considerar campos enteros con los rangos de valores según sea día, mes y año.
-○ Debe utilizar un archivo binario llamado personas.dat rara registrar los datos ingresados.
-○ Implementar una función para el menú que contenga las siguientes opciones:
-1- Ingresar información de una persona
-2- Mostrar por pantalla los datos de las personas registradas
-3- Consulta de información, buscando por mes de nacimiento
-99- Salir del programa
-○ Formato de salida:
-Apellido y Nombre: Younes, José Fecha de Nac: 23/05/1968 Código: 1
-Apellido y Nombre: Perez, Jorge Luis Fecha de Nac: 05/05/2010 Código: 2
-La opción 3, debe solicitar al usuario el ingreso de un mes, luego el programa deberá mostrar por
-pantalla los datos de las personas en donde coincida el mes ingresado con el mes de nacimiento
-registrado en el archivo */
+/* Utilizar el programa del ejercicio anterior agregando una opción al menú “4- Modificación de datos,
+buscando por apellido y nombre”. La opción 4, debe solicitar al usuario el ingreso del apellido y nombre,
+en caso de encontrar más de una coincidencia el programa deberá mostrar por pantalla las mismas y
+pedir el código de la persona a modificar. Luego permite reingresar todos los datos excepto el código.
+Consideraciones:
+● Al buscar tener en cuenta que el usuario puede ingresar los datos con mayúscula o minúscula, no
+tener en cuenta esa diferencia al momento de comparar.
+● Debe modificar solo esa porción del struct y actualizar esa persona en el archivo.
+● Considerar que en el ingreso de los datos debe realizar los controles de datos antes especificados.
+*/
+
+/* NO SE SI ESTÁ COMPLETADO, REVISAR */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     int dia, mes, anio;
@@ -39,6 +32,7 @@ void mostrarArchivo(char nombre[]);
 void busquedaPorMes(char nombre[], int mes);
 void escribirPersona(char nombre[], persona pers);
 void reiniciarArchivo(char nombre[]);
+void modificacionDatos(char nombre[]);
 
 int main(int argc, char *argv[]) {
     char nombre[] = "personas.dat";
@@ -68,6 +62,9 @@ int main(int argc, char *argv[]) {
                     busquedaPorMes(nombre, mes);
                 } else
                     printf("\n>> Aún no se registró ningún ingreso de persona... \n");
+                break;
+            case 4:
+
                 break;
             case 99:
                 printf("\nFinalizando programa... \n\n");
@@ -142,6 +139,7 @@ int menu() {
     printf("\n1. Ingresar información de una persona");
     printf("\n2. Mostrar por pantalla los datos de las personas registradas");
     printf("\n3. Consulta de información, buscando por mes de nacimiento");
+    printf("\n4. Modificación de datos, buscando por apellido y nombre");
     printf("\n99. Salir del programa");
     printf("\nOpción: ");
     scanf("%i", &opcion);
@@ -201,4 +199,52 @@ void reiniciarArchivo(char nombre[]) {
     p = fopen(nombre, "wb");
 
     fclose(p);
+}
+
+void modificacionDatos(char nombre[]) {
+    int posicion = 0;
+    int posiciones[10]; /* voy guardando las posiciones que coinciden con la busqueda (maximo 10) */
+    int indicePos = 0;
+    persona pers;
+    persona pers2;
+    FILE *p;
+
+    /* Ingreso nombre y apellido para busar en el archivo */
+    char apellido[30], nombre[30];
+    printf("\nIngresando datos a buscar... \n");
+    printf("\nNombre: ");
+    fscanf(stdin, "%s[a-Z ']", pers2.nombre);
+    while (fgetc(stdin) != '\n')
+        ;
+
+    printf("\nApellido: ");
+    fscanf(stdin, "%s[a-Z ']", pers2.apellido);
+    while (fgetc(stdin) != '\n')
+        ;
+
+    p = fopen(nombre, "rb");
+
+    do {
+        fread(&pers, sizeof(pers), 1, p);
+        if (feof(p) == 0) {
+            if (coincideCadena(pers2.nombre, pers.nombre) && coincideCadena(pers2.apellido, pers.apellido)) {
+                posiciones[indicePos] = posicion;
+                indicePos++;
+            }
+            posicion++;
+        }
+    } while (feof(p) == 0);
+}
+
+int coincideCadena(char cadenaBuscar[], char cadena[]) {
+    int cantidad = 0;
+    for (int i = 0; i < strlen(Nombre); i++) {
+        if (tolower(Nombre[i]) == tolower(cadena[i]))
+            cantidad++;
+    }
+
+    if (cantidad == strlen(Nombre))
+        return 1;
+    else
+        return 0;
 }

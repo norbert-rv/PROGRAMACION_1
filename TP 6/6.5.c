@@ -21,6 +21,7 @@ void aperturaArchivo(char nombre[]);
 void escrituraProcesador(char nombre[], int indice);
 void mostrarContenidoArchivo(char nombre[], int indice);
 int tieneContenido(char nombre[]);
+void mostrarProcesador(procesador proc);
 
 int main(int argc, char *argv[]) {
     char nombre[] = "procesadores.dat";
@@ -78,7 +79,8 @@ procesador ingresoProcesador(void) {
 
     printf("\nModelo: ");
     fscanf(stdin, "%s[a-Z-0-9]", unProcesador.modelo);
-    getchar();
+    while (fgetc(stdin) != '\n')
+        ;
 
     printf("\nPrecio: ");
     do {
@@ -124,7 +126,32 @@ void escrituraProcesador(char nombre[], int indice) {
     fclose(p);
 }
 
+void mostrarProcesador(procesador proc) {
+    printf("%s         %s         %.2f\n", proc.marca, proc.modelo, proc.precio);
+}
+
 void mostrarContenidoArchivo(char nombre[], int indice) {
+    procesador proc;
+    FILE *p;
+    long t; /* número de estructuras del archivo */
+
+    p = fopen(nombre, "rb");
+
+    fseek(p, 0, 2);
+
+    t = ftell(p) / sizeof(proc); /* sizeof me devuelve el tamaño físico de la estructura */
+
+    rewind(p);
+
+    printf("\nMARCA       MODELO      PRECIO\n");
+
+    for (long i = 0; i < t; i++) {
+        fread(&proc, sizeof(proc), 1, p);
+        mostrarProcesador(proc);
+    }
+
+    fclose(p);
+    /*
     procesador unProcesador;
     FILE *p;
 
@@ -132,13 +159,16 @@ void mostrarContenidoArchivo(char nombre[], int indice) {
     printf("\nMARCA       MODELO      PRECIO\n");
 
     do {
-        fread(&unProcesador, sizeof(unProcesador), 1, p); /* pasa automaticamente a la siguiente posición */
+        fread(&unProcesador, sizeof(unProcesador), 1, p); /* pasa automaticamente a la siguiente posición
 
-        if (feof(p) == 0)
-            printf("%s         %s         %.2f\n", unProcesador.marca, unProcesador.modelo, unProcesador.precio);
-    } while (feof(p) == 0);
-    
+    if (feof(p) == 0)
+        printf("%s         %s         %.2f\n", unProcesador.marca, unProcesador.modelo, unProcesador.precio);
+    }
+    while (feof(p) == 0)
+        ;
+
     fclose(p);
+    */
 
     printf("\n\n");
 }
