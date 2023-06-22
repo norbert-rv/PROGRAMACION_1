@@ -9,8 +9,7 @@ tener en cuenta esa diferencia al momento de comparar.
 ● Considerar que en el ingreso de los datos debe realizar los controles de datos antes especificados.
 */
 
-/* NO SE SI ESTÁ COMPLETADO, REVISAR */
-
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +32,7 @@ void busquedaPorMes(char nombre[], int mes);
 void escribirPersona(char nombre[], persona pers);
 void reiniciarArchivo(char nombre[]);
 void modificacionDatos(char nombre[]);
+int coincideCadena(char cadenaA[], char cadenaB[]);
 
 int main(int argc, char *argv[]) {
     char nombre[] = "personas.dat";
@@ -64,7 +64,10 @@ int main(int argc, char *argv[]) {
                     printf("\n>> Aún no se registró ningún ingreso de persona... \n");
                 break;
             case 4:
-
+                if (codigo != 1) {
+                    modificacionDatos(nombre);
+                } else
+                    printf("\n>> Aún no se registró ningún ingreso de persona... \n");
                 break;
             case 99:
                 printf("\nFinalizando programa... \n\n");
@@ -201,49 +204,59 @@ void reiniciarArchivo(char nombre[]) {
     fclose(p);
 }
 
-void modificacionDatos(char nombre[]) {
-    int posicion = 0;
+void modificacionDatos(char nombreArchivo[]) {
+    long i, t;
     int posiciones[10]; /* voy guardando las posiciones que coinciden con la busqueda (maximo 10) */
-    int indicePos = 0;
+    char nombre[30], apellido[30];
     persona pers;
-    persona pers2;
     FILE *p;
 
     /* Ingreso nombre y apellido para busar en el archivo */
-    char apellido[30], nombre[30];
     printf("\nIngresando datos a buscar... \n");
     printf("\nNombre: ");
-    fscanf(stdin, "%s[a-Z ']", pers2.nombre);
+    fscanf(stdin, "%s[a-Z ']", nombre);
     while (fgetc(stdin) != '\n')
         ;
 
     printf("\nApellido: ");
-    fscanf(stdin, "%s[a-Z ']", pers2.apellido);
+    fscanf(stdin, "%s[a-Z ']", apellido);
     while (fgetc(stdin) != '\n')
         ;
 
-    p = fopen(nombre, "rb");
+    p = fopen(nombreArchivo, "r+b");
 
-    do {
+    fseek(p, 0, 2);
+    t = ftell(p) / sizeof(pers);
+    rewind(p);
+
+    for (i = 0; i < t; i++) {
         fread(&pers, sizeof(pers), 1, p);
-        if (feof(p) == 0) {
-            if (coincideCadena(pers2.nombre, pers.nombre) && coincideCadena(pers2.apellido, pers.apellido)) {
-                posiciones[indicePos] = posicion;
-                indicePos++;
-            }
-            posicion++;
+        if (coincideCadena(nombre, pers.nombre) && coincideCadena(apellido, pers.apellido)) {
+            printf("\nCambiar datos de '%s, %s'... \n", nombre, apellido);
+            int j = pers.codigo;
+            pers = ingresarDatos(j);
+            fseek(p, -1 * sizeof(pers), 1);
+            fwrite(&pers, sizeof(pers), 1, p);
         }
-    } while (feof(p) == 0);
+    }
+
+    fclose(p);
 }
 
 int coincideCadena(char cadenaBuscar[], char cadena[]) {
     int cantidad = 0;
-    for (int i = 0; i < strlen(Nombre); i++) {
-        if (tolower(Nombre[i]) == tolower(cadena[i]))
-            cantidad++;
+
+    for (int i = 0; i < strlen(cadenaBuscar); i++) {
+        if (isalpha(cadenaBuscar[i]) && isalpha(cadena[i])) {
+            if (tolower(cadenaBuscar[i]) == tolower(cadena[i]))
+                cantidad++;
+        } else if ((cadenaBuscar[i] == ' ' || cadenaBuscar[i] == 39) && (cadena[i] == ' ' || cadena[i] == 39)) {
+            if (cadenaBuscar[i] == cadena[i])
+                cantidad++;
+        }
     }
 
-    if (cantidad == strlen(Nombre))
+    if (cantidad == strlen(cadenaBuscar) && cantidad == strlen(cadena))
         return 1;
     else
         return 0;
