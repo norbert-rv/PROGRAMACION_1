@@ -96,6 +96,7 @@ void mostrarDatosAmigo(char nombre[]) {
     p = fopen(nombre, "rt");
 
     printf("\n");
+
     do {
         c = fgetc(p);
 
